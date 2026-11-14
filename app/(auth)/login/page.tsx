@@ -6,7 +6,7 @@ export default function Login() {
             <div className="w-full max-w-md">
 
                 <a href="/" className="mb-12 block text-center text-2xl font-bold tracking-tight text-white">
-                    Brand<span className="text-white/40">.</span>
+                    Shubham<span className="text-white/40">.</span>
                 </a>
 
                 <div className="mb-10 text-center">
