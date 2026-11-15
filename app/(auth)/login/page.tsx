@@ -1,7 +1,27 @@
+"use client"
+
+import { FormEvent, useCallback, useState } from "react";
+import Toaster from "@/components/Toaster";
 
 export default function Login() {
+    const [showToast, setShowToast] = useState(false);
+
+    const closeToast = useCallback(() => setShowToast(false), []);
+
+    const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setShowToast(true);
+    }
+
     return (
         <div className="flex min-h-screen items-center justify-center bg-black px-6 py-12">
+
+            <Toaster
+                heading="Login isn't ready yet"
+                message="This page only exists to separate auth and main pages using route groups. Real login coming soon."
+                show={showToast}
+                onClose={closeToast}
+            />
 
             <div className="w-full max-w-sm">
 
@@ -18,7 +38,7 @@ export default function Login() {
                     </p>
                 </div>
 
-                <form className="space-y-5">
+                <form onSubmit={handleSubmit} className="space-y-5">
 
                     <div>
                         <label className="mb-2 block text-sm font-medium text-white/80">
