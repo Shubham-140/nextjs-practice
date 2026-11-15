@@ -31,13 +31,31 @@ export default function CountryPage() {
     loadCountry();
   }, [val]);
 
-  if (error) {
-    return <p role="alert">{error}</p>;
-  }
+  return (
+    <div className="mx-auto w-full max-w-3xl px-6 py-16">
 
-  if (country === null) {
-    return <p>Loading country...</p>;
-  }
+      <h1 className="text-3xl font-semibold capitalize tracking-tight text-white">
+        {decodeURIComponent(val)}
+      </h1>
+      <p className="mt-2 text-sm text-white/40">
+        raw response from <code className="rounded bg-white/10 px-1.5 py-0.5 text-xs">/api/countries?val={val}</code>
+      </p>
 
-  return <pre>{JSON.stringify(country, null, 2)}</pre>;
+      {error ? (
+        <p role="alert" className="mt-8 rounded-lg border border-red-400/20 bg-red-400/5 px-4 py-3 text-sm text-red-300/90">
+          {error}
+        </p>
+      ) : country === null ? (
+        <div className="mt-8 flex items-center gap-3 text-sm text-white/40">
+          <div className="h-4 w-4 animate-spin rounded-full border-2 border-white/10 border-t-white" />
+          Loading country...
+        </div>
+      ) : (
+        <pre className="mt-8 max-h-[65vh] overflow-auto rounded-xl border border-white/10 bg-white/[0.03] p-5 text-xs leading-5 text-white/70">
+          {JSON.stringify(country, null, 2)}
+        </pre>
+      )}
+
+    </div>
+  );
 }

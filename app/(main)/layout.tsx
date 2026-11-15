@@ -3,9 +3,11 @@ import React from 'react'
 
 function layout({ children }: { children: React.ReactNode }) {
     return (
-        <div>
+        <div className="flex min-h-screen flex-col bg-black text-white">
             <Navbar />
-            {children}
+            <main className="flex-1">
+                {children}
+            </main>
         </div>
     )
 }

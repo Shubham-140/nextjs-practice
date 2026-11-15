@@ -41,8 +41,23 @@ async function page() {
     const data = await getFact();
 
     return (
-        <div>
-            {data.text}
+        <div className="mx-auto w-full max-w-2xl px-6 py-20">
+
+            <h1 className="text-sm font-medium text-white/50">Did you know?</h1>
+
+            <div className="mt-4 rounded-xl border border-white/10 bg-white/[0.03] p-6 sm:p-8">
+                <p className="text-xl font-medium leading-relaxed text-white">
+                    {data.text}
+                </p>
+
+                <div className="mt-6 flex items-center justify-between border-t border-white/10 pt-4 text-xs text-white/40">
+                    <span>new fact every 10s</span>
+                    <a href={data.permalink} target="_blank" rel="noreferrer" className="hover:text-white">
+                        source ↗
+                    </a>
+                </div>
+            </div>
+
         </div>
     )
 }
