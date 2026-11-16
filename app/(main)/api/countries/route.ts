@@ -7,7 +7,7 @@ export async function GET(request: Request) {
     }
 
     if (!apiKey) {
-        return Response.json({ error: "Country API key is missing." }, { status: 500 });
+        return Response.json({ error: "Missing environment variable: COUNTRY_API" }, { status: 500 });
     }
 
     try {

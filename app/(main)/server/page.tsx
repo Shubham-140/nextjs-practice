@@ -6,7 +6,12 @@ type User = {
 }
 
 async function page() {
-    const response = await fetch(`${process.env.JSONPLACEHOLDER_API}`);
+    const url = process.env.JSONPLACEHOLDER_API;
+    if (!url) {
+        throw new Error("Missing environment variable: JSONPLACEHOLDER_API");
+    }
+
+    const response = await fetch(url);
     if (!response.ok) {
         notFound();
     }

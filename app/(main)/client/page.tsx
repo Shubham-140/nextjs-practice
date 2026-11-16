@@ -11,6 +11,7 @@ function page() {
     const router = useRouter();
     const [users, setUsers] = useState<User[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string | null>(null);
     const controllerRef = useRef<AbortController | null>(null);
 
     const fetchUsers = useCallback(async () => {
@@ -22,7 +23,14 @@ function page() {
         controllerRef.current = controller;
 
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_JSONPLACEHOLDER_API_CLIENT}`, { signal: controller.signal });
+            const url = process.env.NEXT_PUBLIC_JSONPLACEHOLDER_API_CLIENT;
+            if (!url) {
+                setError("Missing environment variable: NEXT_PUBLIC_JSONPLACEHOLDER_API_CLIENT (set it, then rebuild)");
+                return;
+            }
+            setError(null);
+
+            const response = await fetch(url, { signal: controller.signal });
             if (!response.ok) {
                 router.push("/404");
                 return;
@@ -78,6 +86,12 @@ function page() {
                     {loading ? "Loading..." : "Fetch again"}
                 </button>
             </div>
+
+            {error && (
+                <p role="alert" className="mt-8 rounded-lg border border-red-400/20 bg-red-400/5 px-4 py-3 text-sm text-red-300/90">
+                    {error}
+                </p>
+            )}
 
             <div className="mt-8 overflow-hidden rounded-xl border border-white/10 bg-white/[0.03]">
                 <table className="w-full text-left text-sm">

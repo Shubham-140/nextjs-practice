@@ -1,4 +1,4 @@
-"server-only"
+import "server-only";
 
 type Data = {
     title: string,
@@ -7,8 +7,13 @@ type Data = {
 }
 
 export async function deletePost(data: Data) {
+    const url = process.env.JSONPLACEHOLDER_API_DEL;
+    if (!url) {
+        throw new Error("Missing environment variable: JSONPLACEHOLDER_API_DEL");
+    }
+
     try {
-        const response = await fetch(`${process.env.JSONPLACEHOLDER_API_DEL}`,
+        const response = await fetch(url,
             {
                 method: "POST",
                 headers: {
