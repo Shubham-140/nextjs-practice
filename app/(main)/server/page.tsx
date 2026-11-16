@@ -13,7 +13,7 @@ async function page() {
 
     const response = await fetch(url);
     if (!response.ok) {
-        notFound();
+        throw new Error(`Users request failed (${response.status})`);
     }
 
     const users: User[] = await response.json();

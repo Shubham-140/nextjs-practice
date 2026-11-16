@@ -4,7 +4,7 @@ import React from 'react'
 const getFact = async () => {
     const response = await fetch("https://uselessfacts.jsph.pl/api/v2/facts/random", { next: { revalidate: 10 } });
     if (!response.ok) {
-        notFound();
+        throw new Error(`Fact request failed (${response.status})`);
     }
 
     const data = await response.json();
