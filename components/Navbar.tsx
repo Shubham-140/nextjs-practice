@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { Suspense } from "react";
+import NavLinks, { NavLinksList } from "./NavLinks";
 
 export default function Navbar() {
     return (
@@ -9,20 +11,10 @@ export default function Navbar() {
                     Shubham<span className="text-white/40">.dev</span>
                 </Link>
 
-                <div className="hidden items-center gap-6 md:flex">
-                    <Link href="/" className="text-sm text-white transition hover:text-white/50">
-                        Home
-                    </Link>
-                    <Link href="/about" className="text-sm text-white/50 transition hover:text-white">
-                        About
-                    </Link>
-                    <Link href="/fact" className="text-sm text-white/50 transition hover:text-white">
-                        Fact
-                    </Link>
-                    <Link href="/joke" className="text-sm text-white/50 transition hover:text-white">
-                        Jokes
-                    </Link>
-                </div>
+                {/* usePathname needs Suspense with cacheComponents on dynamic routes */}
+                <Suspense fallback={<NavLinksList pathname={null} />}>
+                    <NavLinks />
+                </Suspense>
 
                 <Link
                     href="/login"
