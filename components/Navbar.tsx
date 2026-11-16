@@ -11,7 +11,6 @@ export default function Navbar() {
                     Shubham<span className="text-white/40">.dev</span>
                 </Link>
 
-                {/* usePathname needs Suspense with cacheComponents on dynamic routes */}
                 <Suspense fallback={<NavLinksList pathname={null} />}>
                     <NavLinks />
                 </Suspense>
