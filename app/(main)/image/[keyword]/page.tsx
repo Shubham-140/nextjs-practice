@@ -7,6 +7,10 @@ type props = {
     }>
 }
 
+export function generateStaticParams() {
+    return [{ keyword: "mountain" }, { keyword: "dog" }, { keyword: "ocean" }]
+}
+
 async function SceneryComponent({ params }: props) {
 
     return (
