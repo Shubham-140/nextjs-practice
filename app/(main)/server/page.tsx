@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { notFound } from 'next/navigation';
 
 type User = {
@@ -5,7 +6,7 @@ type User = {
     id: number
 }
 
-async function page() {
+async function UsersList() {
     const url = process.env.JSONPLACEHOLDER_API;
     if (!url) {
         throw new Error("Missing environment variable: JSONPLACEHOLDER_API");
@@ -22,17 +23,10 @@ async function page() {
     }
 
     return (
-        <div className="mx-auto w-full max-w-xl px-6 py-16">
+        <>
+            <p className="mt-8 text-right text-xs text-white/40">{users.length} total</p>
 
-            <div className="flex items-end justify-between">
-                <div>
-                    <h1 className="text-3xl font-semibold tracking-tight text-white">Users</h1>
-                    <p className="mt-2 text-sm text-white/40">fetched on the server</p>
-                </div>
-                <span className="text-xs text-white/40">{users.length} total</span>
-            </div>
-
-            <ul className="mt-8 divide-y divide-white/10 rounded-xl border border-white/10 bg-white/[0.03]">
+            <ul className="mt-2 divide-y divide-white/10 rounded-xl border border-white/10 bg-white/[0.03]">
                 {
                     users.map((user) => {
                         return <li key={user.id} className="flex items-center gap-4 px-5 py-3.5">
@@ -44,6 +38,39 @@ async function page() {
                     })
                 }
             </ul>
+        </>
+    )
+}
+
+function UsersSkeleton() {
+    return (
+        <>
+            <div className="mt-8 ml-auto h-3 w-12 animate-pulse rounded bg-white/10" />
+
+            <ul className="mt-2 animate-pulse divide-y divide-white/10 rounded-xl border border-white/10 bg-white/[0.03]">
+                {
+                    Array.from({ length: 6 }).map((_, index) => {
+                        return <li key={index} className="flex items-center gap-4 px-5 py-3.5">
+                            <span className="h-8 w-8 rounded-full bg-white/10" />
+                            <span className="h-4 w-40 rounded bg-white/10" />
+                        </li>
+                    })
+                }
+            </ul>
+        </>
+    )
+}
+
+function page() {
+    return (
+        <div className="mx-auto w-full max-w-xl px-6 py-16">
+
+            <h1 className="text-3xl font-semibold tracking-tight text-white">Users</h1>
+            <p className="mt-2 text-sm text-white/40">fetched on the server, streamed in</p>
+
+            <Suspense fallback={<UsersSkeleton />}>
+                <UsersList />
+            </Suspense>
 
         </div>
     )
