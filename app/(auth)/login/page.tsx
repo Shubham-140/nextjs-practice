@@ -1,6 +1,7 @@
 "use client"
 
 import { FormEvent } from "react";
+import Link from "next/link";
 import { useToast } from "@/components/ToastProvider";
 
 export default function Login() {
@@ -19,9 +20,9 @@ export default function Login() {
 
             <div className="w-full max-w-sm">
 
-                <a href="/" className="mb-10 block text-lg font-bold text-white">
+                <Link href="/" className="mb-10 block text-lg font-bold text-white">
                     Shubham<span className="text-white/40">.dev</span>
-                </a>
+                </Link>
 
                 <div className="mb-8">
                     <h1 className="text-3xl font-semibold tracking-tight text-white">
@@ -50,9 +51,9 @@ export default function Login() {
                             <label className="text-sm font-medium text-white/80">
                                 Password
                             </label>
-                            <a href="/forgot-password" className="text-xs text-white/40 transition hover:text-white">
+                            <Link href="/forgot-password" className="text-xs text-white/40 transition hover:text-white">
                                 Forgot password?
-                            </a>
+                            </Link>
                         </div>
                         <input
                             type="password"
@@ -82,10 +83,10 @@ export default function Login() {
                 </form>
 
                 <p className="mt-6 text-sm text-white/40">
-                    Don't have an account?{" "}
-                    <a href="/register" className="font-medium text-white transition hover:text-white/60">
+                    Don&apos;t have an account?{" "}
+                    <Link href="/register" className="font-medium text-white transition hover:text-white/60">
                         Create account
-                    </a>
+                    </Link>
                 </p>
 
             </div>

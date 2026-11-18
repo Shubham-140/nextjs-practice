@@ -14,7 +14,7 @@ export default function NotFound() {
                 </h2>
 
                 <p className="mt-3 max-w-sm text-sm leading-6 text-white/40">
-                    Sorry, the page you're looking for doesn't exist
+                    Sorry, the page you&apos;re looking for doesn&apos;t exist
                     or may have been moved.
                 </p>
 

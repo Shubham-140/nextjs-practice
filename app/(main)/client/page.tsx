@@ -7,57 +7,56 @@ type User = {
     name: string
 }
 
-function page() {
+const url = process.env.NEXT_PUBLIC_JSONPLACEHOLDER_API_CLIENT;
+const error = url ? null : "Missing environment variable: NEXT_PUBLIC_JSONPLACEHOLDER_API_CLIENT (set it, then rebuild)";
+
+async function getUsers(url: string, signal: AbortSignal) {
+    const response = await fetch(url, { signal });
+    if (!response.ok) {
+        return null;
+    }
+
+    const users: User[] = await response.json();
+    return users.length > 0 ? users : null;
+}
+
+function Page() {
     const router = useRouter();
     const [users, setUsers] = useState<User[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(Boolean(url));
     const controllerRef = useRef<AbortController | null>(null);
 
-    const fetchUsers = useCallback(async () => {
+    const fetchUsers = useCallback(() => {
+        if (!url) return;
+
         if (controllerRef.current) {
             controllerRef.current.abort();
         }
-        setLoading(true);
         const controller = new AbortController();
         controllerRef.current = controller;
 
-        try {
-            const url = process.env.NEXT_PUBLIC_JSONPLACEHOLDER_API_CLIENT;
-            if (!url) {
-                setError("Missing environment variable: NEXT_PUBLIC_JSONPLACEHOLDER_API_CLIENT (set it, then rebuild)");
-                return;
-            }
-            setError(null);
-
-            const response = await fetch(url, { signal: controller.signal });
-            if (!response.ok) {
-                router.push("/404");
-                return;
-            }
-
-            const fetchedUsers: User[] = await response.json();
-            if (fetchedUsers.length === 0) {
-                router.push("/404");
-                return;
-            }
-
-            setUsers(fetchedUsers);
-        }
-        catch (error: unknown) {
-            if (error instanceof Error && error.name === "AbortError") {
-                console.log("Ongoing flight request is stopped");
-            }
-            else {
-                console.log(error);
-            }
-        }
-        finally {
-            if (controller === controllerRef.current) {
-                setLoading(false);
-                controllerRef.current = null;
-            }
-        }
+        getUsers(url, controller.signal)
+            .then((fetchedUsers) => {
+                if (!fetchedUsers) {
+                    router.push("/404");
+                    return;
+                }
+                setUsers(fetchedUsers);
+            })
+            .catch((error: unknown) => {
+                if (error instanceof Error && error.name === "AbortError") {
+                    console.log("Ongoing flight request is stopped");
+                }
+                else {
+                    console.log(error);
+                }
+            })
+            .finally(() => {
+                if (controller === controllerRef.current) {
+                    setLoading(false);
+                    controllerRef.current = null;
+                }
+            });
     }, [router])
 
     useEffect(() => {
@@ -80,8 +79,11 @@ function page() {
                 </div>
                 <button
                     className="cursor-pointer rounded-lg bg-white px-4 py-2 text-xs font-semibold text-black transition hover:bg-white/85 disabled:cursor-wait disabled:opacity-50"
-                    onClick={fetchUsers}
-                    disabled={loading}
+                    onClick={() => {
+                        setLoading(true);
+                        fetchUsers();
+                    }}
+                    disabled={loading || !url}
                 >
                     {loading ? "Loading..." : "Fetch again"}
                 </button>
@@ -118,4 +120,4 @@ function page() {
     )
 }
 
-export default page
+export default Page

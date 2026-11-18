@@ -1,36 +1,57 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# nextjs-practice
 
-## Getting Started
+Just a practice repo I use to revise Next.js (App Router). Every page tries out one thing, so it's more of a playground than an actual app. Some pages use free public APIs, so they might break once in a while.
 
-First, run the development server:
+Built with Next.js 16, React 19, TypeScript and Tailwind CSS.
+
+## What's in here
+
+| Route | What it covers |
+| --- | --- |
+| `/` | home page, links to everything |
+| `/about` | static metadata |
+| `/fact` | `generateMetadata`, time based revalidation |
+| `/joke` | server actions, `revalidateTag`, `server-only`, streaming with Suspense |
+| `/server` | fetching on the server, streaming with Suspense |
+| `/client` | same data but fetched on the client with `useEffect` and `AbortController` |
+| `/country/[val]` | route handler (`/api/countries`) + dynamic route, e.g. `/country/india` |
+| `/image/[keyword]` | `next/image` with remote images, `generateStaticParams` |
+| `/login` | just the UI for now, lives in a separate `(auth)` route group |
+
+Other stuff used across the app:
+
+- route groups for main and auth pages with their own layouts
+- `loading.tsx`, `not-found.tsx`, `error.tsx` and `global-error.tsx`
+- Google fonts with `next/font`
+- active link highlighting in the navbar with `usePathname`
+- a global toast using the Context API
+- env variables, both server only and `NEXT_PUBLIC_`
+
+## Running it locally
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Env variables
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Create a `.env` file in the root with these:
 
-## Learn More
+```
+JSONPLACEHOLDER_API=
+NEXT_PUBLIC_JSONPLACEHOLDER_API_CLIENT=
+JSONPLACEHOLDER_API_DEL=
+COUNTRY_API=
+```
 
-To learn more about Next.js, take a look at the following resources:
+The first three are JSONPlaceholder URLs (users list and a posts endpoint), and `COUNTRY_API` is an API key from restcountries. If any of them is missing, the page using it will show which one.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev` - start the dev server
+- `npm run build` - production build
+- `npm run start` - run the production build
+- `npm run lint` - run ESLint
