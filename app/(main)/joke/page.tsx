@@ -1,5 +1,6 @@
 import React from 'react'
-import { fetchJoke, revalidateJoke } from './actions';
+import { fetchJoke } from './actions';
+import JokeButton from './JokeButton';
 import { deletePost } from './server';
 
 async function page() {
@@ -29,11 +30,7 @@ async function page() {
                 </p>
             </div>
 
-            <form action={revalidateJoke} className="mt-4">
-                <button className="w-full cursor-pointer rounded-lg bg-white py-3 text-sm font-semibold text-black transition hover:bg-white/85">
-                    Another one
-                </button>
-            </form>
+            <JokeButton />
 
             <div className="mt-12 rounded-lg border border-dashed border-white/15 p-4 text-xs">
                 <p className="mb-2 text-white/40">test post response</p>
